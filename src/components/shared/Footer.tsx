@@ -1,7 +1,7 @@
 const navigation = [
   {
-    name: "Facebook",
-    href: "#",
+    name: 'Facebook',
+    href: '#',
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -13,8 +13,8 @@ const navigation = [
     ),
   },
   {
-    name: "Instagram",
-    href: "#",
+    name: 'Instagram',
+    href: '#',
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -26,8 +26,8 @@ const navigation = [
     ),
   },
   {
-    name: "X",
-    href: "#",
+    name: 'X',
+    href: '#',
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z" />
@@ -35,8 +35,8 @@ const navigation = [
     ),
   },
   {
-    name: "GitHub",
-    href: "#",
+    name: 'GitHub',
+    href: '#',
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -48,8 +48,8 @@ const navigation = [
     ),
   },
   {
-    name: "YouTube",
-    href: "#",
+    name: 'YouTube',
+    href: '#',
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -60,7 +60,7 @@ const navigation = [
       </svg>
     ),
   },
-];
+]
 
 export default function Footer() {
   return (
@@ -68,24 +68,20 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           {navigation.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-gray-400 hover:text-gray-500 z-50"
-            >
+            <a key={item.name} href={item.href} className="z-50 text-gray-400 hover:text-gray-500">
               <span className="sr-only">{item.name}</span>
               <item.icon aria-hidden="true" className="h-6 w-6" />
             </a>
           ))}
         </div>
-        <div className="mt-8 md:order-1 md:mt-0 z-50">
+        <div className="z-50 mt-8 md:order-1 md:mt-0">
           <p className="text-center text-sm leading-5 text-gray-400">
-            &copy; {new Date().getFullYear()} Kleek. Powered by{" "}
+            &copy; {new Date().getFullYear()} Kleek. Powered by{' '}
             <a
               href="https://etherwavelabs.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 font-semibold "
+              className="font-semibold text-gray-500"
             >
               Etherwave Labs
             </a>
@@ -94,5 +90,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }
