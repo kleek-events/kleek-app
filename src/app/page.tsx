@@ -49,7 +49,7 @@ export default function Home() {
           />
         </div>
         <div className="overflow-hidden">
-          <div className="mx-auto max-w-7xl px-6 pb-32 pt-16 sm:pt-24 lg:px-8 lg:pt-20">
+          <div className="mx-auto max-w-7xl px-6 pb-32 pt-16 sm:pt-24 lg:px-8 lg:pt-8">
             <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
               <div className="relative w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
                 <p className="my-4 text-2xl text-gray-500">Kleek</p>
@@ -63,7 +63,7 @@ export default function Home() {
                 </p>
                 <div className="mt-10 flex items-center gap-x-6">
                   <Link
-                    href="/events/create"
+                    href="/create"
                     className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Create Your First Event
