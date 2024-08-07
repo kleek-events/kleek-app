@@ -18,6 +18,8 @@ import SignInButton from '@/components/SignInButton'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { DatePicker } from '@/components/ui/DatePicker'
+import { useState } from 'react'
+import Image from 'next/image'
 
 const formSchema = z.object({
   name: z.string().min(20, {
@@ -34,6 +36,7 @@ const formSchema = z.object({
 
 export default function Create() {
   const account = useAccount()
+  const [thumbnailPreview, setThumbnailPreview] = useState<File | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,8 +59,17 @@ export default function Create() {
       {account.isConnected ? (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="mx-auto grid max-w-2xl grid-flow-row-dense grid-cols-3 gap-4">
+            <div className="mx-auto grid max-w-4xl grid-flow-row-dense grid-cols-3 gap-12">
               <div>
+                {thumbnailPreview && (
+                  <Image
+                    src={URL.createObjectURL(thumbnailPreview)}
+                    alt="Thumbnail preview"
+                    width={400}
+                    height={400}
+                    className="mb-4 aspect-square rounded-lg object-center"
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name="thumbnail"
@@ -68,7 +80,11 @@ export default function Create() {
                         placeholder="Picture"
                         type="file"
                         accept="image/*"
-                        onChange={(event) => onChange(event.target.files && event.target.files[0])}
+                        onChange={(event) => {
+                          onChange(event.target.files && event.target.files[0])
+                          console.log(event.target.files[0])
+                          setThumbnailPreview(event.target.files[0])
+                        }}
                       />
                       <FormMessage />
                     </FormItem>
