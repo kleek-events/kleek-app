@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
@@ -62,12 +63,9 @@ export default function Home() {
                   rewards.
                 </p>
                 <div className="mt-10 flex items-center gap-x-6">
-                  <Link
-                    href="/create"
-                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Create Your First Event
-                  </Link>
+                  <Button asChild>
+                    <Link href="/create">Create Your First Event</Link>
+                  </Button>
                   <Link
                     href={'discover'}
                     className="text-base font-semibold leading-6 text-gray-900"

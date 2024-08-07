@@ -1,9 +1,11 @@
 // app/layout.tsx
 import './globals.css'
+import { Inter as FontSans } from 'next/font/google'
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 
+import { cn } from '@/lib/utils'
 import { wagmiConfig } from '@/config/wagmi'
 import Web3Provider from '@/context/Web3Provider'
 import RootLayoutInner from '@/components/shared/RootLayoutInner'
@@ -13,6 +15,11 @@ export const metadata: Metadata = {
   description: 'Blockchain-powered event platform that turns no-shows into go-shows',
 }
 
+const fontSans = FontSans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +28,7 @@ export default function RootLayout({
   const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
   return (
     <html lang="en">
-      <body>
+      <body className={cn('bg-background min-h-screen font-sans antialiased', fontSans.variable)}>
         <Web3Provider initialState={initialState}>
           <RootLayoutInner>{children}</RootLayoutInner>
         </Web3Provider>
