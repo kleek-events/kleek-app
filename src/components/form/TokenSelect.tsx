@@ -1,4 +1,5 @@
-import { HeartHandshake, LogOut, Plus } from 'lucide-react'
+import Image from 'next/image'
+import { HeartHandshake, Key } from 'lucide-react'
 
 import {
   Select,
@@ -9,11 +10,28 @@ import {
 } from '@/components/ui/select'
 import { FormControl } from '@/components/ui/form'
 
+import ethereumLogo from '@/assets/tokens/ethereum.svg'
+import usdcLogo from '@/assets/tokens/usdc.svg'
+import usdtLogo from '@/assets/tokens/usdt.svg'
+
 const tokenList = [
   {
     address: '0x',
-    name: 'USDT',
-    logo: 'https://assets.coingecko.com/coins/images/325/small/Tether-logo.png?1598003707',
+    name: 'usdt',
+    symbol: 'USDT',
+    logo: usdtLogo,
+  },
+  {
+    address: '0x',
+    name: 'usdc',
+    symbol: 'USDC',
+    logo: usdcLogo,
+  },
+  {
+    address: '0x',
+    name: 'ethereum',
+    symbol: 'ETH',
+    logo: ethereumLogo,
   },
 ]
 
@@ -35,33 +53,29 @@ export default function TokenSelect({
   }
 
   return (
-    <Select onValueChange={handleChange} defaultValue={field.value}>
+    <Select onValueChange={handleChange} defaultValue={tokenList[0].name}>
       <FormControl>
         <SelectTrigger className="w-[200px] hover:bg-fuchsia-100">
-          <SelectValue placeholder="Select Group" />
+          <SelectValue placeholder="Select Token" />
         </SelectTrigger>
       </FormControl>
       <SelectContent>
-        <SelectItem value="medellinId">
-          <div className="text-muted-foreground flex items-start gap-3">
-            <HeartHandshake className="size-5" />
-            <div className="grid gap-0.5">
-              <p>
-                <span className="text-foreground font-medium">Medellin</span>
-              </p>
+        {tokenList.map((token, index) => (
+          <SelectItem value={token.name} key={index}>
+            <div className="text-muted-foreground flex items-center gap-2">
+              <Image
+                className="size-4"
+                src={token.logo}
+                alt={token.name}
+                width={20}
+                height={20}
+                unoptimized
+              />
+              <span className="text-foreground font-medium">{token.symbol}</span>
+              <span className="capitalize">{token.name}</span>
             </div>
-          </div>
-        </SelectItem>
-        <SelectItem value="bogotaId">
-          <div className="text-muted-foreground flex items-start gap-3">
-            <HeartHandshake className="size-5" />
-            <div className="grid gap-0.5">
-              <p>
-                <span className="text-foreground font-medium">Bogota</span>
-              </p>
-            </div>
-          </div>
-        </SelectItem>
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   )

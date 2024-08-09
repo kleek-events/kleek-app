@@ -17,7 +17,7 @@ export default function VisibilitySelect({
   field: { value: string | null }
 }) {
   return (
-    <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <Select onValueChange={field.onChange} defaultValue="publicVisibility">
       <FormControl>
         <SelectTrigger className="w-[150px] items-start transition-all duration-150 ease-out hover:bg-fuchsia-100 [&_[data-description]]:hidden">
           <SelectValue placeholder="Select a model" />
