@@ -27,6 +27,7 @@ import GroupSelect from '@/components/form/GroupSelect'
 import VisibilitySelect from '@/components/form/VisibilitySelect'
 import AddGroupButton from '@/components/AddGroupButton'
 import { Switch } from '@/components/ui/switch'
+import TokenSelect from '@/components/form/TokenSelect'
 
 export default function Create() {
   const account = useAccount()
@@ -105,7 +106,6 @@ export default function Create() {
                   <FormField
                     control={form.control}
                     name="visibility"
-                    defaultValue="publicVisibility"
                     render={({ field }) => (
                       <FormItem>
                         <VisibilitySelect form={form} field={{ ...field }} />
@@ -207,6 +207,21 @@ export default function Create() {
                         <FormLabel>Max Participant</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="Max participants" {...field} min={0} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <FormField
+                    control={form.control}
+                    name="depositToken"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Deposit Token</FormLabel>
+                        <FormControl>
+                          <TokenSelect form={form} field={{ ...field }} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
