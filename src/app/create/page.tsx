@@ -9,25 +9,24 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import SignInButton from '@/components/SignInButton'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { formSchema } from '@/lib/validator'
 import { Textarea } from '@/components/ui/textarea'
 import { DateTimePicker } from '@/components/ui/datetime-picker'
-import { Combobox } from '@/components/ui/combobox'
+import { AutocompletePlacesInput } from '@/components/form/AutocompletePlacesInput'
+import TimezoneCombobox from '@/components/form/TimezoneCombobox'
+import GroupSelect from '@/components/form/GroupSelect'
+import VisibilitySelect from '@/components/form/VisibilitySelect'
+import AddGroupButton from '@/components/AddGroupButton'
+import { Switch } from '@/components/ui/switch'
 
 export default function Create() {
   const account = useAccount()
@@ -89,6 +88,32 @@ export default function Create() {
                 />
               </div>
               <div className="order-1 flex w-full flex-col gap-4 sm:order-2 sm:col-span-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <FormField
+                      control={form.control}
+                      name="groupId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <GroupSelect form={form} field={{ ...field }} />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <AddGroupButton />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="visibility"
+                    defaultValue="publicVisibility"
+                    render={({ field }) => (
+                      <FormItem>
+                        <VisibilitySelect form={form} field={{ ...field }} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={form.control}
                   name="name"
@@ -108,7 +133,7 @@ export default function Create() {
                   )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="startDate"
@@ -120,17 +145,7 @@ export default function Create() {
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="timezone"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormLabel>Timezone</FormLabel>
-                        <Combobox form={form} field={{ ...field }} />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+
                   <FormField
                     control={form.control}
                     name="endDate"
@@ -145,19 +160,90 @@ export default function Create() {
                 </div>
                 <FormField
                   control={form.control}
+                  name="timezone"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      {/* <FormLabel>Timezone</FormLabel> */}
+                      <TimezoneCombobox form={form} field={{ ...field }} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="description"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
+                    <FormItem className="flex flex-col">
+                      {/* <FormLabel>Description</FormLabel> */}
                       <FormControl>
                         <Textarea
-                          placeholder="Tell more about your event"
+                          placeholder="Describe your event"
                           className="resize-none"
                           {...field}
                         />
                       </FormControl>
-
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <AutocompletePlacesInput form={form} field={{ ...field }} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex gap-4">
+                  <FormField
+                    control={form.control}
+                    name="maxParticipants"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Max Participant</FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder="Max participants" {...field} min={0} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Deposit Fee</FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder="Price" {...field} step=".01" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name="redistribute"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">Sharing is caring</FormLabel>
+                        <FormDescription>
+                          Share deposit fees of no-goers with attending participants
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          aria-readonly
+                        />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
