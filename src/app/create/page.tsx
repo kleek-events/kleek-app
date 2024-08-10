@@ -5,7 +5,15 @@ import { z } from 'zod'
 import { useAccount } from 'wagmi'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { HeartHandshake, UsersRound } from 'lucide-react'
 
+import {
+  AutocompletePlacesInput,
+  GroupSelect,
+  TimezoneCombobox,
+  TokenSelect,
+  VisibilitySelect,
+} from '@/components/form'
 import {
   Form,
   FormControl,
@@ -18,16 +26,13 @@ import {
 import SignInButton from '@/components/SignInButton'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { formSchema } from '@/lib/validator'
 import { Textarea } from '@/components/ui/textarea'
 import { DateTimePicker } from '@/components/ui/datetime-picker'
-import { AutocompletePlacesInput } from '@/components/form/AutocompletePlacesInput'
-import TimezoneCombobox from '@/components/form/TimezoneCombobox'
-import GroupSelect from '@/components/form/GroupSelect'
-import VisibilitySelect from '@/components/form/VisibilitySelect'
 import AddGroupButton from '@/components/AddGroupButton'
 import { Switch } from '@/components/ui/switch'
-import TokenSelect from '@/components/form/TokenSelect'
+import EditCapacityButton from '@/components/EditCapacityButton'
+import { formSchema } from '@/lib/validator'
+import RegisterDeadlineButton from '@/components/RegisterDeadlineButton'
 
 export default function Create() {
   const account = useAccount()
@@ -79,8 +84,10 @@ export default function Create() {
                         type="file"
                         accept="image/*"
                         onChange={(event) => {
-                          onChange(event.target.files && event.target.files[0])
-                          setThumbnailPreview(event.target.files[0])
+                          if (event.target.files) {
+                            form.setValue('thumbnail', event.target.files[0])
+                            setThumbnailPreview(event.target.files[0])
+                          }
                         }}
                       />
                       <FormMessage />
@@ -198,22 +205,7 @@ export default function Create() {
                     </FormItem>
                   )}
                 />
-                <div className="flex gap-4">
-                  <FormField
-                    control={form.control}
-                    name="maxParticipants"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Max Participant</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="Max participants" {...field} min={0} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="depositToken"
@@ -229,12 +221,18 @@ export default function Create() {
                   />
                   <FormField
                     control={form.control}
-                    name="price"
+                    name="depostFee"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Deposit Fee</FormLabel>
                         <FormControl>
-                          <Input type="number" placeholder="Price" {...field} step=".01" />
+                          <Input
+                            type="number"
+                            placeholder="Token quantity"
+                            {...field}
+                            step=".01"
+                            min={0}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -243,13 +241,53 @@ export default function Create() {
                 </div>
                 <FormField
                   control={form.control}
-                  name="redistribute"
+                  name="capacity"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border px-4 py-2">
+                      <div className="space-y-0.5">
+                        <FormLabel className="inline-flex gap-1 text-base">
+                          <UsersRound /> Capacity
+                        </FormLabel>
+                      </div>
+                      <FormControl>
+                        <EditCapacityButton form={form} field={{ ...field }} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="registrationDeadline"
                   render={({ field }) => (
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                       <div className="space-y-0.5">
-                        <FormLabel className="text-base">Sharing is caring</FormLabel>
+                        <FormLabel className="inline-flex gap-1 text-base">
+                          <UsersRound /> Registration deadline
+                        </FormLabel>
                         <FormDescription>
-                          Share deposit fees of no-goers with attending participants
+                          If not set, registration will be open until the event starts.
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <RegisterDeadlineButton form={form} field={{ ...field }} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="redistribute"
+                  defaultValue={true}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                      <div className="space-y-0.5">
+                        <FormLabel className="inline-flex gap-1 text-base">
+                          <HeartHandshake /> Sharing is caring
+                        </FormLabel>
+                        <FormDescription>
+                          Share deposit fees of no-goers between attending participants.
+                          <br />
+                          If disabled, you will keep the deposit fees of no-goers.
                         </FormDescription>
                       </div>
                       <FormControl>

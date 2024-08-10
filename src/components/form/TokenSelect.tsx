@@ -55,7 +55,7 @@ export default function TokenSelect({
   return (
     <Select onValueChange={handleChange} defaultValue={tokenList[0].name}>
       <FormControl>
-        <SelectTrigger className="w-[200px] hover:bg-fuchsia-100">
+        <SelectTrigger className="w-full hover:bg-fuchsia-100">
           <SelectValue placeholder="Select Token" />
         </SelectTrigger>
       </FormControl>
