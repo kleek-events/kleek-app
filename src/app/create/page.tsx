@@ -30,9 +30,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { DateTimePicker } from '@/components/ui/datetime-picker'
 import AddGroupButton from '@/components/AddGroupButton'
 import { Switch } from '@/components/ui/switch'
-import EditCapacityButton from '@/components/EditCapacityButton'
+import EditCapacityInput from '@/components/form/EditCapacityInput'
+import RegisterDeadlineInput from '@/components/form/RegisterDeadlineInput'
 import { formSchema } from '@/lib/validator'
-import RegisterDeadlineButton from '@/components/RegisterDeadlineButton'
 
 export default function Create() {
   const account = useAccount()
@@ -112,6 +112,7 @@ export default function Create() {
                   </div>
                   <FormField
                     control={form.control}
+                    defaultValue="public"
                     name="visibility"
                     render={({ field }) => (
                       <FormItem>
@@ -170,7 +171,6 @@ export default function Create() {
                   name="timezone"
                   render={({ field }) => (
                     <FormItem className="">
-                      {/* <FormLabel>Timezone</FormLabel> */}
                       <TimezoneCombobox form={form} field={{ ...field }} />
                       <FormMessage />
                     </FormItem>
@@ -181,7 +181,6 @@ export default function Create() {
                   name="description"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      {/* <FormLabel>Description</FormLabel> */}
                       <FormControl>
                         <Textarea
                           placeholder="Describe your event"
@@ -209,6 +208,7 @@ export default function Create() {
                   <FormField
                     control={form.control}
                     name="depositToken"
+                    defaultValue="usdt"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Deposit Token</FormLabel>
@@ -221,7 +221,7 @@ export default function Create() {
                   />
                   <FormField
                     control={form.control}
-                    name="depostFee"
+                    name="depositFee"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Deposit Fee</FormLabel>
@@ -230,7 +230,7 @@ export default function Create() {
                             type="number"
                             placeholder="Token quantity"
                             {...field}
-                            step=".01"
+                            step={0.1}
                             min={0}
                           />
                         </FormControl>
@@ -250,7 +250,7 @@ export default function Create() {
                         </FormLabel>
                       </div>
                       <FormControl>
-                        <EditCapacityButton form={form} field={{ ...field }} />
+                        <EditCapacityInput form={form} field={{ ...field }} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -269,7 +269,7 @@ export default function Create() {
                         </FormDescription>
                       </div>
                       <FormControl>
-                        <RegisterDeadlineButton form={form} field={{ ...field }} />
+                        <RegisterDeadlineInput form={form} field={{ ...field }} />
                       </FormControl>
                     </FormItem>
                   )}

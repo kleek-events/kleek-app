@@ -1,11 +1,14 @@
 import * as z from 'zod'
 
-const MAX_FILE_SIZE = 5000000
+const MAX_FILE_SIZE = 3000000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 export const formSchema = z.object({
   groupId: z.string({
     required_error: 'A group is required',
+  }),
+  visibility: z.string({
+    required_error: 'A visibility setting is required',
   }),
   name: z.string().min(10, {
     message: 'Name must be at least 10 characters',
@@ -31,13 +34,12 @@ export const formSchema = z.object({
   }),
   thumbnail: z
     .instanceof(File)
-    .optional()
     .refine((file) => {
       return !file || file.size <= MAX_FILE_SIZE
     }, 'File size must be less than 3MB')
     .refine((file) => {
       return ACCEPTED_IMAGE_TYPES.includes(file.type)
-    }, 'File must be a PNG'),
+    }, 'File must be a valid image'),
   location: z
     .string({
       required_error: 'A location is required.',
@@ -45,5 +47,22 @@ export const formSchema = z.object({
     .min(10, {
       message: 'Location must be at least 10 characters.',
     }),
+  depositToken: z.string({
+    required_error: 'A deposit token is required.',
+  }),
+  depositFee: z.preprocess(
+    (args) => (args === '' ? undefined : args),
+    z.coerce
+      .number({ invalid_type_error: 'Fee must be a number' })
+      .positive('Fee must be positive'),
+  ),
+  capacity: z.preprocess(
+    (args) => (args === '' ? undefined : args),
+    z.coerce
+      .number({ invalid_type_error: 'Capacity must be a number' })
+      .positive('Capacity must be positive')
+      .optional(),
+  ),
   registrationDeadline: z.date().nullable(),
+  redistribute: z.boolean(),
 })
