@@ -71,7 +71,7 @@ export default function TimezoneCombobox({
   form,
   field,
 }: {
-  form: { setValue: (key: string, value: any) => void }
+  form: { setValue: (key: string) => void }
   field: { value: Date | string | null }
 }) {
   return <Combobox valueName="timezone" items={timezones} form={form} field={field} />

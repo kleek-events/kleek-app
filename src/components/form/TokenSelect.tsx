@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { HeartHandshake, Key } from 'lucide-react'
 
 import {
   Select,
@@ -40,7 +39,7 @@ export default function TokenSelect({
   field,
 }: {
   form: { setValue: (key: string, value: any) => void }
-  field: { value: string | null }
+  field: { value: string | undefined; onChange: (value: string) => void }
 }) {
   const handleChange = (value: string) => {
     if (value === 'addGroup') {
@@ -53,7 +52,7 @@ export default function TokenSelect({
   }
 
   return (
-    <Select onValueChange={handleChange} defaultValue={tokenList[0].name}>
+    <Select onValueChange={handleChange} defaultValue={field.value}>
       <FormControl>
         <SelectTrigger className="w-full hover:bg-fuchsia-100">
           <SelectValue placeholder="Select Token" />

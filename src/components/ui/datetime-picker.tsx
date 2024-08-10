@@ -13,7 +13,7 @@ import { TimePicker } from '@/components/ui/time-picker'
 export function DateTimePicker({
   field,
 }: {
-  field: { value: Date | null; onChange: (date: Date) => void }
+  field: { value: Date | undefined; onChange: (date: Date) => void }
 }) {
   return (
     <Popover>

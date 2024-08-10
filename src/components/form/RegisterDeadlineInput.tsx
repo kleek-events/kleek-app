@@ -11,25 +11,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { DateTimePicker } from '@/components/ui/datetime-picker'
 
-export default function EditCapacityButton({
+export default function RegisterDeadlineInput({
   form,
   field,
 }: {
-  form: { setValue: (name: string, value: number | undefined) => void }
-  field: {
-    value: string | number | readonly string[] | undefined
+  form: {
+    setValue: (name: string, value: Date | undefined) => void
   }
+  field: { value: Date | undefined; onChange: (value: Date) => void }
 }) {
   const handleReset = () => {
-    form.setValue('capacity', undefined)
+    form.setValue('registrationDeadline', undefined)
   }
 
   return (
     <div className="flex items-center gap-2">
-      <span>{field.value ?? 'Unlimited'}</span>
+      <small>{field.value?.toLocaleString() ?? 'Not set'}</small>
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline" size="icon" type="button">
@@ -38,24 +37,24 @@ export default function EditCapacityButton({
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Max Capacity</DialogTitle>
+            <DialogTitle>Registration Deadline</DialogTitle>
             <DialogDescription>
-              Group allows you to organize your events and share them with a specific group of
-              people.
+              Set a deadline for registration. After this date, no more registrations will be
+              accepted.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="flex items-center gap-4">
-              <Input placeholder="Max Capacity" {...field} step="1" min={1} type="number" />
+              <DateTimePicker field={{ ...field }} />
             </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button">Confirm Limit</Button>
+              <Button type="button">Confirm Deadline</Button>
             </DialogClose>
             <DialogClose asChild>
               <Button type="button" onClick={handleReset} variant="secondary">
-                Remove Limit
+                Remove Deadline
               </Button>
             </DialogClose>
           </DialogFooter>

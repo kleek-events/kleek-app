@@ -13,18 +13,18 @@ export default function VisibilitySelect({
   form,
   field,
 }: {
-  form: { setValue: (key: string, value: any) => void }
-  field: { value: string | null }
+  form: { setValue: (key: string) => void }
+  field: { value: string | undefined; onChange: (value: string) => void }
 }) {
   return (
-    <Select onValueChange={field.onChange} defaultValue="publicVisibility">
+    <Select onValueChange={field.onChange} defaultValue={field.value}>
       <FormControl>
         <SelectTrigger className="w-[150px] items-start transition-all duration-150 ease-out hover:bg-fuchsia-100 [&_[data-description]]:hidden">
-          <SelectValue placeholder="Select a model" />
+          <SelectValue placeholder="Select a visibility" />
         </SelectTrigger>
       </FormControl>
       <SelectContent>
-        <SelectItem value="publicVisibility">
+        <SelectItem value="public">
           <div className="text-muted-foreground flex items-start gap-3">
             <Eye className="size-5" />
             <div className="grid gap-0.5">
@@ -37,7 +37,7 @@ export default function VisibilitySelect({
             </div>
           </div>
         </SelectItem>
-        <SelectItem value="hiddenVisibility">
+        <SelectItem value="hidden">
           <div className="text-muted-foreground flex items-start gap-3">
             <EyeOff className="size-5" />
             <div className="grid gap-0.5">

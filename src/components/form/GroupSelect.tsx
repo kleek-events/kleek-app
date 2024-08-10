@@ -1,4 +1,4 @@
-import { HeartHandshake, Plus } from 'lucide-react'
+import { HeartHandshake } from 'lucide-react'
 
 import {
   Select,
@@ -14,7 +14,7 @@ export default function GroupSelect({
   field,
 }: {
   form: { setValue: (key: string, value: any) => void }
-  field: { value: string | null }
+  field: { value: string | undefined; onChange: (value: string) => void }
 }) {
   const handleChange = (value: string) => {
     if (value === 'addGroup') {
