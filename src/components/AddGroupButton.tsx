@@ -1,4 +1,5 @@
 import { Plus } from 'lucide-react'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -14,6 +15,17 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 export default function AddGroupButton() {
+  const [groupName, setGroupName] = useState<string>('')
+
+  const handleCreateGroup = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const resp = await fetch('/api/groups', {
+      method: 'POST',
+      body: JSON.stringify({ groupName }),
+    })
+    console.log('resp', resp)
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,17 +45,20 @@ export default function AddGroupButton() {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" defaultValue="@peduarte" className="col-span-3" />
+            <Input
+              onChange={(e) => setGroupName(e.target.value)}
+              id="name"
+              placeholder="Ex: Bali, Football creww..."
+              className="col-span-3"
+              min={5}
+              required
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Create Group</Button>
+          <Button onClick={handleCreateGroup} disabled={groupName.length < 5}>
+            Create Group
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
