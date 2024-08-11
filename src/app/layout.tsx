@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 import { cookieToInitialState } from 'wagmi'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/string'
 import { wagmiConfig } from '@/config/wagmi'
 import Web3Provider from '@/context/Web3Provider'
 import RootLayoutInner from '@/components/shared/RootLayoutInner'

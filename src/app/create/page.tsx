@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { useAccount } from 'wagmi'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { HeartHandshake, UsersRound } from 'lucide-react'
+import { Calendar, HeartHandshake, UsersRound } from 'lucide-react'
 
 import {
   AutocompletePlacesInput,
@@ -32,7 +32,7 @@ import AddGroupButton from '@/components/AddGroupButton'
 import { Switch } from '@/components/ui/switch'
 import EditCapacityInput from '@/components/form/EditCapacityInput'
 import RegisterDeadlineInput from '@/components/form/RegisterDeadlineInput'
-import { formSchema } from '@/lib/validator'
+import { formSchema } from '@/lib/schema'
 
 export default function Create() {
   const account = useAccount()
@@ -262,7 +262,7 @@ export default function Create() {
                     <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                       <div className="space-y-0.5">
                         <FormLabel className="inline-flex gap-1 text-base">
-                          <UsersRound /> Registration deadline
+                          <Calendar /> Registration deadline
                         </FormLabel>
                         <FormDescription>
                           If not set, registration will be open until the event starts.
