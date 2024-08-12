@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 // Limit the middleware to paths starting with `/api/`
 export const config = {
-  matcher: '/api/:groups*',
+  matcher: '/api/groups/:path*',
 }
 
 export async function middleware(req: NextRequest) {

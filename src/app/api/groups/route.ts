@@ -10,10 +10,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
   //get groupName from request body
   const { groupName } = (await req.json()) as GroupEntry
 
-  //get authenticated supabase client
-  if (!req.headers.get('wallet-address'))
-    return NextResponse.json({ error: 'Wallet address not found' }, { status: 401 })
-
   //save in database
   try {
     const { data, error } = await createClient()
@@ -27,7 +23,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     return NextResponse.json({ success: true, data }, { status: 200 })
   } catch (error) {
-    console.error('error', error)
-    return NextResponse.json({ error: 'Databse Error' }, { status: 500 })
+    return NextResponse.json({ error: error.details }, { status: 500 })
   }
 }
