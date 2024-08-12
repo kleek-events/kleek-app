@@ -12,18 +12,15 @@ import { FormControl } from '@/components/ui/form'
 export default function GroupSelect({
   form,
   field,
+  groups,
 }: {
   form: { setValue: (key: string, value: any) => void }
   field: { value: string | undefined; onChange: (value: string) => void }
+  groups: any
 }) {
   const handleChange = (value: string) => {
-    if (value === 'addGroup') {
-      console.log('Add group')
-      return null
-    } else {
-      form.setValue('group', value)
-      field.onChange(value)
-    }
+    form.setValue('group', value)
+    field.onChange(value)
   }
 
   return (
@@ -34,26 +31,19 @@ export default function GroupSelect({
         </SelectTrigger>
       </FormControl>
       <SelectContent>
-        <SelectItem value="medellinId">
-          <div className="text-muted-foreground flex items-start gap-3">
-            <HeartHandshake className="size-5" />
-            <div className="grid gap-0.5">
-              <p>
-                <span className="text-foreground font-medium">Medellin</span>
-              </p>
-            </div>
-          </div>
-        </SelectItem>
-        <SelectItem value="bogotaId">
-          <div className="text-muted-foreground flex items-start gap-3">
-            <HeartHandshake className="size-5" />
-            <div className="grid gap-0.5">
-              <p>
-                <span className="text-foreground font-medium">Bogota</span>
-              </p>
-            </div>
-          </div>
-        </SelectItem>
+        {groups &&
+          groups.map((group: any) => (
+            <SelectItem value={group.id} key={group.id}>
+              <div className="flex items-start gap-3 text-muted-foreground">
+                <HeartHandshake className="size-5" />
+                <div className="grid gap-0.5">
+                  <p>
+                    <span className="font-medium text-foreground">{group.name}</span>
+                  </p>
+                </div>
+              </div>
+            </SelectItem>
+          ))}
       </SelectContent>
     </Select>
   )

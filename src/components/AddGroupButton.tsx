@@ -14,20 +14,36 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export default function AddGroupButton() {
+export default function AddGroupButton({ onGroupCreated }: { onGroupCreated: () => void }) {
   const [groupName, setGroupName] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleCreateGroup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const resp = await fetch('/api/groups', {
-      method: 'POST',
-      body: JSON.stringify({ groupName }),
-    })
-    console.log('resp', resp)
+    try {
+      setLoading(true)
+      const resp = await fetch('/api/groups', {
+        method: 'POST',
+        body: JSON.stringify({ groupName }),
+      })
+
+      if (!resp.ok) {
+        const data = await resp.json()
+        throw new Error(data.error)
+      }
+      onGroupCreated()
+      setLoading(false)
+      setOpen(false)
+    } catch (error) {
+      setError(error.message)
+      setLoading(false)
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon" type="button">
           <Plus className="h-4 w-4" />
@@ -54,10 +70,18 @@ export default function AddGroupButton() {
               required
             />
           </div>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
         <DialogFooter>
           <Button onClick={handleCreateGroup} disabled={groupName.length < 5}>
-            Create Group
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 animate-spin rounded-full border-r-2 border-t-2 border-fuchsia-300" />
+                Creating...
+              </div>
+            ) : (
+              'Create Group'
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
