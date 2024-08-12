@@ -38,11 +38,16 @@ export function Combobox({
             role="combobox"
             className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}
           >
-            {field.value
-              ? items.find((item) => item.value === field.value)?.label +
-                ' ' +
-                items.find((item) => item.value === field.value)?.offset
-              : 'Select timezone'}
+            {field.value ? (
+              <div className="flex flex-row justify-between gap-4">
+                <span>{items.find((item) => item.value === field.value)?.value}</span>
+                <span className="text-muted-foreground">
+                  {items.find((item) => item.value === field.value)?.offset}
+                </span>
+              </div>
+            ) : (
+              'Select timezone'
+            )}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </FormControl>
@@ -53,10 +58,10 @@ export function Combobox({
           <CommandList>
             <CommandEmpty>No timezone found.</CommandEmpty>
             <CommandGroup>
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <CommandItem
-                  value={item.label}
-                  key={item.value}
+                  value={item.value}
+                  key={index}
                   onSelect={() => {
                     form.setValue(valueName, item.value)
                   }}
@@ -67,7 +72,10 @@ export function Combobox({
                       item.value === field.value ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {item.label + ' - ' + item.offset}
+                  <div className="flex flex-row justify-between gap-4">
+                    <span>{item.value}</span>
+                    <span className="text-muted-foreground">{item.offset}</span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>

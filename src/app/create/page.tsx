@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -12,6 +13,7 @@ import {
   TimezoneCombobox,
   TokenSelect,
   VisibilitySelect,
+  RegisterDeadlineInput,
 } from '@/components/form'
 import {
   Form,
@@ -30,10 +32,8 @@ import { DateTimePicker } from '@/components/ui/datetime-picker'
 import AddGroupButton from '@/components/AddGroupButton'
 import { Switch } from '@/components/ui/switch'
 import EditCapacityInput from '@/components/form/EditCapacityInput'
-import RegisterDeadlineInput from '@/components/form/RegisterDeadlineInput'
 import { formSchema } from '@/lib/schema'
 import { createClient } from '@/utils/supabase/client'
-import { useAccount } from 'wagmi'
 
 export default function Create() {
   const account = useAccount()
@@ -187,6 +187,7 @@ export default function Create() {
               />
             </div>
             <FormField
+              defaultValue={Intl.DateTimeFormat().resolvedOptions().timeZone}
               control={form.control}
               name="timezone"
               render={({ field }) => (
