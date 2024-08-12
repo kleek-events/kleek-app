@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -56,20 +57,15 @@ export default function AddGroupButton({ onGroupCreated }: { onGroupCreated: () 
             Group allows you to organize your events and share them with a specific group of people.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              onChange={(e) => setGroupName(e.target.value)}
-              id="name"
-              placeholder="Ex: Bali, Football creww..."
-              className="col-span-3"
-              min={5}
-              required
-            />
-          </div>
+        <div className="flex flex-col gap-2">
+          <Input
+            onChange={(e) => setGroupName(e.target.value)}
+            id="name"
+            placeholder="Enter group name. Ex: Mexico, Bali Yoga..."
+            className="col-span-3 w-full"
+            min={5}
+            required
+          />
           {error && <p className="text-red-500">{error}</p>}
         </div>
         <DialogFooter>
@@ -83,6 +79,11 @@ export default function AddGroupButton({ onGroupCreated }: { onGroupCreated: () 
               'Create Group'
             )}
           </Button>
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
