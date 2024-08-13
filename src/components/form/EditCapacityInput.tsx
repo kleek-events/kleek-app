@@ -19,7 +19,7 @@ export default function EditCapacityInput({
 }: {
   form: { setValue: (name: string, value: number | undefined) => void }
   field: {
-    value: string | number | readonly string[] | undefined
+    value: number | undefined
   }
 }) {
   const handleReset = () => {
