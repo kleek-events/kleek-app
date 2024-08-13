@@ -9,10 +9,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import SignInButton from '@/components/SignInButton'
 
 const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
+  { name: 'Discover', href: '/discover' },
+  { name: 'My Events', href: '#' },
+  { name: 'Create Event', href: '/create' },
 ]
 
 export default function Header() {
@@ -47,17 +46,17 @@ export default function Header() {
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
-        {/* <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
-        </div> */}
+        </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             <SignInButton />
