@@ -1,9 +1,9 @@
 import { getToken } from 'next-auth/jwt'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Limit the middleware to paths starting with `/api/`
+// // Limit the middleware to paths starting with `/api/`
 export const config = {
-  matcher: '/api/groups/:path*',
+  matcher: ['/api/groups/:path*', '/api/pinata/:path*'],
 }
 
 export async function middleware(req: NextRequest) {
