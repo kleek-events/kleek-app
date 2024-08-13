@@ -34,19 +34,21 @@ import { Switch } from '@/components/ui/switch'
 import EditCapacityInput from '@/components/form/EditCapacityInput'
 import { formSchema } from '@/lib/schema'
 import { createClient } from '@/utils/supabase/client'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function Create() {
   const account = useAccount()
   const [thumbnailPreview, setThumbnailPreview] = useState<File | null>(null)
   const [groups, setGroups] = useState<any[]>([])
   const [refreshGroups, setRefreshGroups] = useState(false)
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      endDate: new Date(Date.now() + 26 * 60 * 60 * 1000),
     },
   })
 
@@ -70,10 +72,49 @@ export default function Create() {
     }
   }, [account.address, refreshGroups])
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+
+    try {
+      //upload thumbnail to IPFS
+      const data = new FormData()
+      data.set('file', values.thumbnail)
+      const uploadThumbnailRequest = await fetch('/api/pinata/files', {
+        method: 'POST',
+        body: data,
+      })
+      const uploadFileResponse = await uploadThumbnailRequest.json()
+
+      if (!uploadFileResponse.IpfsHash) {
+        throw new Error('Failed to upload thumbnail')
+      }
+
+      const eventData = {
+        ...values,
+        thumbnail: uploadFileResponse.IpfsHash,
+      }
+
+      //upload event data to IPFS
+      const uploadEventResponse = await fetch('/api/pinata/json', {
+        method: 'POST',
+        body: JSON.stringify(eventData),
+      })
+
+      const uploadEventData = await uploadEventResponse.json()
+      if (!uploadEventData.IpfsHash) {
+        throw new Error('Failed to upload event data')
+      }
+
+      console.log(uploadEventData)
+    } catch (e) {
+      console.log(e)
+
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      })
+    }
   }
 
   return (
@@ -297,7 +338,7 @@ export default function Create() {
             />
             <FormField
               control={form.control}
-              name="redistribute"
+              name="shareDeposit"
               defaultValue={true}
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
