@@ -6,6 +6,11 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Calendar, HeartHandshake, UsersRound } from 'lucide-react'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import tz from 'dayjs/plugin/timezone'
+dayjs.extend(utc)
+dayjs.extend(tz)
 
 import {
   AutocompletePlacesInput,
@@ -59,7 +64,6 @@ export default function Create() {
         .select()
         .eq('wallet', account.address)
       if (error) throw error
-      console.log('fetching groups', groups)
       setGroups(groups)
     } catch (error) {
       console.error(error)
@@ -72,13 +76,29 @@ export default function Create() {
     }
   }, [account.address, refreshGroups])
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>): Promise<void> => {
     console.log(values)
 
     try {
+      const modifiedValues: Omit<
+        z.infer<typeof formSchema>,
+        'startDate' | 'endDate' | 'registrationDeadline'
+      > & {
+        startDate: number
+        endDate: number
+        registrationDeadline: number | null
+      } = {
+        ...values,
+        startDate: dayjs(values.startDate).tz(values.timezone).unix(),
+        endDate: dayjs(values.endDate).tz(values.timezone).unix(),
+        registrationDeadline: values.registrationDeadline
+          ? dayjs(values.registrationDeadline).tz(values.timezone).unix()
+          : null,
+      }
+
       //upload thumbnail to IPFS
       const data = new FormData()
-      data.set('file', values.thumbnail)
+      data.set('file', modifiedValues.thumbnail)
       const uploadThumbnailRequest = await fetch('/api/pinata/files', {
         method: 'POST',
         body: data,
