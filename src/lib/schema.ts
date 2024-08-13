@@ -1,7 +1,7 @@
 import * as z from 'zod'
 
-const MAX_FILE_SIZE = 3000000
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+const MAX_FILE_SIZE = 1024 * 1024 // 1MB
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png']
 
 export const formSchema = z.object({
   groupId: z.string({
@@ -36,7 +36,7 @@ export const formSchema = z.object({
     .instanceof(File)
     .refine((file) => {
       return !file || file.size <= MAX_FILE_SIZE
-    }, 'File size must be less than 3MB')
+    }, 'File size must be less than 1MB')
     .refine((file) => {
       return ACCEPTED_IMAGE_TYPES.includes(file.type)
     }, 'File must be a valid image'),
@@ -64,5 +64,5 @@ export const formSchema = z.object({
       .optional(),
   ),
   registrationDeadline: z.date().nullable(),
-  redistribute: z.boolean(),
+  shareDeposit: z.boolean(),
 })
