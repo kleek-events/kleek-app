@@ -8,31 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FormControl } from '@/components/ui/form'
-
-import ethereumLogo from '@/assets/tokens/ethereum.svg'
-import usdcLogo from '@/assets/tokens/usdc.svg'
-import usdtLogo from '@/assets/tokens/usdt.svg'
-
-const tokenList = [
-  {
-    address: '0x',
-    name: 'usdt',
-    symbol: 'USDT',
-    logo: usdtLogo,
-  },
-  {
-    address: '0x',
-    name: 'usdc',
-    symbol: 'USDC',
-    logo: usdcLogo,
-  },
-  {
-    address: '0x',
-    name: 'ethereum',
-    symbol: 'ETH',
-    logo: ethereumLogo,
-  },
-]
+import { DEPOSIT_TOKEN_ALLOWED } from '@/utils/blockchain'
 
 export default function TokenSelect({
   form,
@@ -59,9 +35,9 @@ export default function TokenSelect({
         </SelectTrigger>
       </FormControl>
       <SelectContent>
-        {tokenList.map((token, index) => (
+        {DEPOSIT_TOKEN_ALLOWED.map((token, index) => (
           <SelectItem value={token.name} key={index}>
-            <div className="text-muted-foreground flex items-center gap-2">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <Image
                 className="size-4"
                 src={token.logo}
@@ -70,7 +46,7 @@ export default function TokenSelect({
                 height={20}
                 unoptimized
               />
-              <span className="text-foreground font-medium">{token.symbol}</span>
+              <span className="font-medium text-foreground">{token.symbol}</span>
               <span className="capitalize">{token.name}</span>
             </div>
           </SelectItem>

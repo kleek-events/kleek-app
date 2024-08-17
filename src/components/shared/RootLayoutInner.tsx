@@ -10,7 +10,7 @@ function RootLayoutInner({
   children: React.ReactNode
 }>) {
   return (
-    <div className="h-full bg-white">
+    <div className="h-full">
       <Header />
       {children}
       <Footer />

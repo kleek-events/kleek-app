@@ -1,5 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { encodeAbiParameters } from 'viem'
+import { writeContract } from '@wagmi/core'
 import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import { z } from 'zod'
@@ -40,13 +42,17 @@ import EditCapacityInput from '@/components/form/EditCapacityInput'
 import { formSchema } from '@/lib/schema'
 import { createClient } from '@/utils/supabase/client'
 import { useToast } from '@/components/ui/use-toast'
+import { KleekProtocolABI } from '@/lib/abi'
+import { wagmiConfig } from '@/config/wagmi'
+import { DEPOSIT_TOKEN_ALLOWED, KLEEK_PROXY_ADDRESS } from '@/utils/blockchain'
 
 export default function Create() {
   const account = useAccount()
+  const { toast } = useToast()
   const [thumbnailPreview, setThumbnailPreview] = useState<File | null>(null)
   const [groups, setGroups] = useState<any[]>([])
   const [refreshGroups, setRefreshGroups] = useState(false)
-  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,10 +83,23 @@ export default function Create() {
   }, [account.address, refreshGroups])
 
   const onSubmit = async (values: z.infer<typeof formSchema>): Promise<void> => {
-    console.log(values)
+    setLoading(true)
 
     try {
-      const modifiedValues: Omit<
+      //upload thumbnail to IPFS
+      const data = new FormData()
+      data.set('file', values.thumbnail)
+      const uploadThumbnailRequest = await fetch('/api/pinata/files', {
+        method: 'POST',
+        body: data,
+      })
+      const uploadFileResponse = await uploadThumbnailRequest.json()
+
+      if (!uploadFileResponse.IpfsHash) {
+        throw new Error('Failed to upload thumbnail')
+      }
+
+      const eventData: Omit<
         z.infer<typeof formSchema>,
         'startDate' | 'endDate' | 'registrationDeadline'
       > & {
@@ -93,26 +112,12 @@ export default function Create() {
         endDate: dayjs(values.endDate).tz(values.timezone).unix(),
         registrationDeadline: values.registrationDeadline
           ? dayjs(values.registrationDeadline).tz(values.timezone).unix()
-          : null,
-      }
-
-      //upload thumbnail to IPFS
-      const data = new FormData()
-      data.set('file', modifiedValues.thumbnail)
-      const uploadThumbnailRequest = await fetch('/api/pinata/files', {
-        method: 'POST',
-        body: data,
-      })
-      const uploadFileResponse = await uploadThumbnailRequest.json()
-
-      if (!uploadFileResponse.IpfsHash) {
-        throw new Error('Failed to upload thumbnail')
-      }
-
-      const eventData = {
-        ...values,
+          : dayjs(values.startDate).tz(values.timezone).unix(),
         thumbnail: uploadFileResponse.IpfsHash,
+        capacity: values.capacity ?? 0,
       }
+
+      console.log(eventData)
 
       //upload event data to IPFS
       const uploadEventResponse = await fetch('/api/pinata/json', {
@@ -126,9 +131,36 @@ export default function Create() {
       }
 
       console.log(uploadEventData)
+
+      //set params
+      // const token = WHITELISTED_TOKENS.find((t) => t.address == props.conditions.tokenAddress)
+      // const depositFee = BigInt(eventData.depositFee * 10 ** (token?.decimals ?? 18))
+      const depositFee = BigInt(eventData.depositFee * 10 ** 6)
+      let params = encodeAbiParameters(
+        [{ type: 'uint256' }, { type: 'address' }],
+        [depositFee, DEPOSIT_TOKEN_ALLOWED.find((t) => t.name == 'usdc').address.testnet],
+      )
+      console.log(params)
+
+      //create event on chain
+      const result = await writeContract(wagmiConfig, {
+        abi: KleekProtocolABI,
+        address: KLEEK_PROXY_ADDRESS,
+        functionName: 'create',
+        args: [
+          `ipfs://${uploadEventData.IpfsHash}`,
+          eventData.endDate,
+          eventData.registrationDeadline,
+          eventData.capacity,
+          '0x8084071AE8A350cbecC1cdB29a45468E0e48B8dA',
+          params,
+        ],
+      })
+      setLoading(false)
+      //create event in database
     } catch (e) {
       console.log(e)
-
+      setLoading(false)
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
@@ -367,9 +399,9 @@ export default function Create() {
                       <HeartHandshake /> Sharing is caring
                     </FormLabel>
                     <FormDescription>
-                      Share deposit fees of no-goers between attending participants.
+                      Share deposit fees of no-goers between attendees.
                       <br />
-                      If disabled, you will keep the deposit fees of no-goers.
+                      If disabled, you will keep all the deposit fees of no-goers.
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -379,8 +411,12 @@ export default function Create() {
               )}
             />
           </div>
-          <Button className="order-last sm:col-span-2 sm:col-start-2" type="submit">
-            Create Event
+          <Button
+            className="order-last sm:col-span-2 sm:col-start-2"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? 'Create Event' : 'Creating Event'}
           </Button>
         </div>
       </form>
