@@ -10,8 +10,8 @@ import {
   OwnershipTransferred as OwnershipTransferredEvent,
   Paused as PausedEvent,
   Unpaused as UnpausedEvent,
-  Upgraded as UpgradedEvent
-} from "../generated/Kleek/Kleek"
+  Upgraded as UpgradedEvent,
+} from '../generated/Kleek/Kleek'
 import {
   AttendeesChecked,
   ConditionModuleWhitelisted,
@@ -24,15 +24,13 @@ import {
   OwnershipTransferred,
   Paused,
   Unpaused,
-  Upgraded
-} from "../generated/schema"
+  Upgraded,
+} from '../generated/schema'
 
 export function handleAttendeesChecked(event: AttendeesCheckedEvent): void {
-  let entity = new AttendeesChecked(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new AttendeesChecked(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.eventId = event.params.eventId
-  entity.attendees = event.params.attendees
+  // entity.attendees = event.params.attendees
   entity.data = event.params.data
   entity.sender = event.params.sender
   entity.timestamp = event.params.timestamp
@@ -44,11 +42,9 @@ export function handleAttendeesChecked(event: AttendeesCheckedEvent): void {
   entity.save()
 }
 
-export function handleConditionModuleWhitelisted(
-  event: ConditionModuleWhitelistedEvent
-): void {
+export function handleConditionModuleWhitelisted(event: ConditionModuleWhitelistedEvent): void {
   let entity = new ConditionModuleWhitelisted(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
+    event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.module = event.params.module
   entity.name = event.params.name
@@ -64,9 +60,7 @@ export function handleConditionModuleWhitelisted(
 }
 
 export function handleEventCanceled(event: EventCanceledEvent): void {
-  let entity = new EventCanceled(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new EventCanceled(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.eventId = event.params.eventId
   entity.reason = event.params.reason
   entity.data = event.params.data
@@ -81,9 +75,7 @@ export function handleEventCanceled(event: EventCanceledEvent): void {
 }
 
 export function handleEventCreated(event: EventCreatedEvent): void {
-  let entity = new EventCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new EventCreated(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.eventId = event.params.eventId
   entity.owner = event.params.owner
   entity.contentUri = event.params.contentUri
@@ -98,9 +90,7 @@ export function handleEventCreated(event: EventCreatedEvent): void {
 }
 
 export function handleEventSettled(event: EventSettledEvent): void {
-  let entity = new EventSettled(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new EventSettled(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.eventId = event.params.eventId
   entity.data = event.params.data
   entity.sender = event.params.sender
@@ -114,9 +104,7 @@ export function handleEventSettled(event: EventSettledEvent): void {
 }
 
 export function handleEventUpdated(event: EventUpdatedEvent): void {
-  let entity = new EventUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new EventUpdated(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.eventId = event.params.eventId
   entity.owner = event.params.owner
   entity.contentUri = event.params.contentUri
@@ -130,9 +118,7 @@ export function handleEventUpdated(event: EventUpdatedEvent): void {
 }
 
 export function handleInitialized(event: InitializedEvent): void {
-  let entity = new Initialized(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new Initialized(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.version = event.params.version
 
   entity.blockNumber = event.block.number
@@ -143,9 +129,7 @@ export function handleInitialized(event: InitializedEvent): void {
 }
 
 export function handleNewEnrollee(event: NewEnrolleeEvent): void {
-  let entity = new NewEnrollee(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new NewEnrollee(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.eventId = event.params.eventId
   entity.enrollee = event.params.enrollee
   entity.sender = event.params.sender
@@ -158,12 +142,8 @@ export function handleNewEnrollee(event: NewEnrolleeEvent): void {
   entity.save()
 }
 
-export function handleOwnershipTransferred(
-  event: OwnershipTransferredEvent
-): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+export function handleOwnershipTransferred(event: OwnershipTransferredEvent): void {
+  let entity = new OwnershipTransferred(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.previousOwner = event.params.previousOwner
   entity.newOwner = event.params.newOwner
 
@@ -175,9 +155,7 @@ export function handleOwnershipTransferred(
 }
 
 export function handlePaused(event: PausedEvent): void {
-  let entity = new Paused(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new Paused(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.account = event.params.account
 
   entity.blockNumber = event.block.number
@@ -188,9 +166,7 @@ export function handlePaused(event: PausedEvent): void {
 }
 
 export function handleUnpaused(event: UnpausedEvent): void {
-  let entity = new Unpaused(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new Unpaused(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.account = event.params.account
 
   entity.blockNumber = event.block.number
@@ -201,9 +177,7 @@ export function handleUnpaused(event: UnpausedEvent): void {
 }
 
 export function handleUpgraded(event: UpgradedEvent): void {
-  let entity = new Upgraded(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
+  let entity = new Upgraded(event.transaction.hash.concatI32(event.logIndex.toI32()))
   entity.implementation = event.params.implementation
 
   entity.blockNumber = event.block.number

@@ -8,7 +8,7 @@ dataSources:
     name: Kleek
     network: base-sepolia
     source:
-      address: "0x61635a29bEFA6524b97563bD202840AB37DdF4Ad"
+      address: '0x41D60e2D8AAFEeff97b0704Def4A35aba6582aF3'
       abi: Kleek
       startBlock: 14044341
     mapping:
