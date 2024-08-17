@@ -1,0 +1,8 @@
+{
+  "base-sepolia": {
+    "Kleek": {
+      "address": "0x61635a29bEFA6524b97563bD202840AB37DdF4Ad",
+      "startBlock": 14044341
+    }
+  }
+}

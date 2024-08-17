@@ -1,0 +1,59 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Kleek
+    network: base-sepolia
+    source:
+      address: "0x61635a29bEFA6524b97563bD202840AB37DdF4Ad"
+      abi: Kleek
+      startBlock: 14044341
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AttendeesChecked
+        - ConditionModuleWhitelisted
+        - EventCanceled
+        - EventCreated
+        - EventSettled
+        - EventUpdated
+        - Initialized
+        - NewEnrollee
+        - OwnershipTransferred
+        - Paused
+        - Unpaused
+        - Upgraded
+      abis:
+        - name: Kleek
+          file: ./abis/Kleek.json
+      eventHandlers:
+        - event: AttendeesChecked(indexed uint256,address[],bytes,address,uint256)
+          handler: handleAttendeesChecked
+        - event: ConditionModuleWhitelisted(indexed address,string,bool,address,uint256)
+          handler: handleConditionModuleWhitelisted
+        - event: EventCanceled(indexed uint256,string,bytes,address,uint256)
+          handler: handleEventCanceled
+        - event: EventCreated(indexed uint256,indexed address,string,uint256,uint256)
+          handler: handleEventCreated
+        - event: EventSettled(indexed uint256,bytes,address,uint256)
+          handler: handleEventSettled
+        - event: EventUpdated(indexed uint256,indexed address,string,uint256)
+          handler: handleEventUpdated
+        - event: Initialized(uint64)
+          handler: handleInitialized
+        - event: NewEnrollee(indexed uint256,indexed address,address,uint256)
+          handler: handleNewEnrollee
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/kleek.ts
