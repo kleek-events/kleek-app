@@ -28,7 +28,7 @@ export default function RootLayout({
   const initialState = cookieToInitialState(wagmiConfig, headers().get('cookie'))
   return (
     <html lang="en">
-      <body className={cn('bg-background min-h-screen font-sans antialiased', fontSans.variable)}>
+      <body className={cn('bg-background font-sans antialiased', fontSans.variable)}>
         <Web3Provider initialState={initialState}>
           <RootLayoutInner>{children}</RootLayoutInner>
         </Web3Provider>
