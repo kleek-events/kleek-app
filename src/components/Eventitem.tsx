@@ -5,12 +5,11 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { Calendar, MapPin, Users, Clock } from 'lucide-react'
 
+import { getEventMetadata } from '@/services/ipfs'
+import { PINATA_GATEWAY_URL } from '@/utils/pinata'
+
 dayjs.extend(utc)
 dayjs.extend(timezone)
-
-import { getEventMetadata } from '@/services/ipfs'
-
-const PINATA_GATEWAY_URL = process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
 
 export default async function EventItem({
   event,

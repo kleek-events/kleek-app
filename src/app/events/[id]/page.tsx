@@ -9,11 +9,10 @@ import { getEvent } from '@/services/subgraph'
 import { getEventMetadata } from '@/services/ipfs'
 import { Button } from '@/components/ui/button'
 import ButtonRegister from './ButtonRegister'
+import { PINATA_GATEWAY_URL } from '@/utils/pinata'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
-
-const PINATA_GATEWAY_URL = process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
 
 async function Event({ params }: { params: { id: number } }) {
   const event = await getEvent(params.id)
