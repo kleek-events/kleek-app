@@ -4,6 +4,8 @@ import ethereumLogo from '@/assets/tokens/ethereum.svg'
 import usdcLogo from '@/assets/tokens/usdc.svg'
 import usdtLogo from '@/assets/tokens/usdt.svg'
 
+export const USDC_ADDRESS_BASE_SEPOLIA = '0x036cbd53842c5426634e7929541ec2318f3dcf7e'
+
 /*** TOKENS ***/
 interface Token {
   readonly name: string
@@ -22,7 +24,7 @@ export const DEPOSIT_TOKEN_ALLOWED: Token[] = [
     symbol: 'USDC',
     address: {
       mainnet: '0x',
-      testnet: '0x036cbd53842c5426634e7929541ec2318f3dcf7e',
+      testnet: USDC_ADDRESS_BASE_SEPOLIA,
     },
     decimals: 6,
     logo: usdcLogo,
