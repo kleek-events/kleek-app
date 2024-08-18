@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye } from 'lucide-react'
 
 import { cn } from '@/utils/string'
 
@@ -13,7 +13,7 @@ export default function GroupItem({
   }
 }>) {
   return (
-    <Link key={group.id} href={group.name} className="font-medium text-gray-900">
+    <Link href={group.name} className="font-medium text-gray-900">
       <li className="col-span-1 flex rounded-md shadow-sm">
         <div
           className={cn(

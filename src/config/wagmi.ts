@@ -14,7 +14,7 @@ const metadata = {
 }
 
 // Create wagmiConfig
-const chains = [base, baseSepolia] as const
+const chains = [baseSepolia] as const
 
 export const wagmiConfig = defaultWagmiConfig({
   chains,
