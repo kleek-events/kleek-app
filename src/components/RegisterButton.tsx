@@ -30,7 +30,7 @@ export function RegisterButton({ event }: { event: any }) {
   const submitRegister = async () => {
     try {
       setLoading(true)
-      const depositFee = BigInt(2 * 10 ** 6)
+      const depositFee = BigInt(5 * 10 ** 6)
       const tx1Hash = await writeContract(wagmiConfig, {
         abi: erc20Abi,
         address: USDC_ADDRESS_BASE_SEPOLIA,
@@ -51,7 +51,7 @@ export function RegisterButton({ event }: { event: any }) {
         abi: KleekProtocolABI,
         address: KLEEK_PROXY_ADDRESS,
         functionName: 'enroll',
-        args: [1, account.address],
+        args: [2, account.address],
       })
 
       const tx2Receipt = await waitForTransactionReceipt(wagmiConfig, {
@@ -64,6 +64,7 @@ export function RegisterButton({ event }: { event: any }) {
 
       setLoading(false)
     } catch (error) {
+      console.log(error)
       setLoading(false)
       toast({
         variant: 'destructive',
