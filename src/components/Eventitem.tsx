@@ -85,7 +85,7 @@ export default async function EventItem({
             <div className="flex items-center">
               <Users className="mr-2 h-4 w-4" />
               <span>
-                {metadata.capacity === 0 ? 'Unlimited' : `${metadata.capacity} attendees`}
+                Capacity: {metadata.capacity === 0 ? 'Unlimited' : `${metadata.capacity} attendees`}
               </span>
             </div>
           </div>

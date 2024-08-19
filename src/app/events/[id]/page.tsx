@@ -25,7 +25,6 @@ dayjs.extend(timezone)
 
 async function Event({ params }: { params: { id: number } }) {
   const event = await getEvent(params.id)
-
   if (event.contentUri == 'http://ipfs' || !event.contentUri) return
 
   const metadata = await getEventMetadata(event.contentUri.replace('ipfs://', ''))
@@ -86,7 +85,9 @@ async function Event({ params }: { params: { id: number } }) {
           </div>
           <div className="flex items-center">
             <Users className="mr-2 h-4 w-4" />
-            <span>{metadata.capacity === 0 ? 'Unlimited' : `${metadata.capacity} attendees`}</span>
+            <span>
+              Capacity: {metadata.capacity === 0 ? 'Unlimited' : `${metadata.capacity} attendees`}
+            </span>
           </div>
         </div>
 
