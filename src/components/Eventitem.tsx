@@ -3,14 +3,13 @@ import Link from 'next/link'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import { Calendar, MapPin, Users, Clock } from 'lucide-react'
+import { Calendar, MapPin, Users, Clock, HeartHandshakeIcon } from 'lucide-react'
+
+import { getEventMetadata } from '@/services/ipfs'
+import { PINATA_GATEWAY_URL } from '@/utils/pinata'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
-
-import { getEventMetadata } from '@/services/ipfs'
-
-const PINATA_GATEWAY_URL = process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
 
 export default async function EventItem({
   event,
@@ -60,7 +59,11 @@ export default async function EventItem({
           <div className="mb-2 flex items-start justify-between">
             <h3 className="text-xl font-bold text-gray-900">{metadata.name}</h3>
             <span className="ml-2 inline-flex rounded-full bg-fuchsia-100 px-2 py-1 text-xs font-semibold leading-5 text-fuchsia-600">
-              {metadata.shareDeposit ? 'Shared Deposit' : 'Transfer Deposit'}
+              {metadata.shareDeposit && (
+                <div className="inline-flex items-center gap-1">
+                  <HeartHandshakeIcon className="size-4" /> Shared Deposit
+                </div>
+              )}
             </span>
           </div>
           <p className="mb-4 line-clamp-2 text-sm text-gray-600">{metadata.description}</p>
