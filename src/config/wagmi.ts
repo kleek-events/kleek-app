@@ -9,8 +9,8 @@ export const projectId = 'b695b35c75a4543769439bec65495986'
 const metadata = {
   name: 'Kleek',
   description: 'Blockchain-powered event platform that turns no-shows into go-shows',
-  url: 'https://kleek.events', // origin must match your domain & subdomain
-  icons: ['https://avatars.githubusercontent.com/u/37784886'],
+  url: 'https://testnet.kleek.events', // origin must match your domain & subdomain
+  icons: [`${process.env.APP_URL}/kleek-logo.png`],
 }
 
 // Create wagmiConfig
