@@ -96,8 +96,8 @@ export function RegisterButton() {
             <h2 className="mb-4 text-2xl font-bold text-gray-800">You are almost there!</h2>
 
             <p className="mb-4 text-gray-700">
-              Great news! This event is <strong>free to attend</strong>. Here's what you need to
-              know:
+              Great news! This event is <strong>free to attend</strong>. Here&apos;s what you need
+              to know:
             </p>
 
             <ol className="mb-4 space-y-4">
@@ -107,23 +107,25 @@ export function RegisterButton() {
                   To ensure attendance, we ask for a small, refundable deposit.
                 </span>{' '}
                 <em className="text-sm text-blue-600">
-                  Don't worry - you'll get it back when you attend the event!
+                  Don&apos;t worry - you&apos;ll get it back when you attend the event!
                 </em>
               </li>
 
               <li className="rounded bg-green-50 p-3">
                 <strong className="text-green-700">Blockchain Magic:</strong>{' '}
                 <span className="text-gray-700">
-                  We use blockchain technology to make this process secure and automatic. It's like
-                  a digital handshake between you and the event.
+                  We use blockchain technology to make this process secure and automatic. It&apos;s
+                  like a digital handshake between you and the event.
                 </span>
               </li>
 
               <li className="rounded bg-purple-50 p-3">
                 <strong className="text-purple-700">Two Quick Steps:</strong>{' '}
                 <ol className="list-lower-alpha mt-2 space-y-1 pl-5">
-                  <li className="text-gray-700">First, you'll approve the use of your deposit.</li>
-                  <li className="text-gray-700">Then, you'll confirm your registration.</li>
+                  <li className="text-gray-700">
+                    First, you&apos;ll approve the use of your deposit.
+                  </li>
+                  <li className="text-gray-700">Then, you&apos;ll confirm your registration.</li>
                 </ol>
                 <p className="mt-2 text-sm text-purple-500">
                   Both steps will pop up in your wallet- just follow the prompts!
@@ -132,7 +134,8 @@ export function RegisterButton() {
             </ol>
 
             <p className="font-semibold text-gray-700">
-              That's it! Once done, you're all set for the event. We can't wait to see you there!
+              That&apos;s it! Once done, you&apos;re all set for the event. We can&apos;t wait to
+              see you there!
             </p>
           </ModalContent>
           <ModalFooter className="gap-4">
