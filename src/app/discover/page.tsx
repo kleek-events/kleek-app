@@ -32,8 +32,6 @@ function EventSkeletons() {
 async function Discover() {
   const { data: groups, error } = await createClient().from('groups').select('*')
   const events = await getAllEvents()
-  console.log('events', events)
-  console.log('groups', groups)
 
   return (
     <>
