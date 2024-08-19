@@ -3,8 +3,9 @@ import Link from 'next/link'
 import { Eye } from 'lucide-react'
 
 import { cn } from '@/utils/string'
+import { createClient } from '@/utils/supabase/client'
 
-export default function GroupItem({
+export default async function GroupItem({
   group,
 }: Readonly<{
   group: {
@@ -12,6 +13,11 @@ export default function GroupItem({
     name: string
   }
 }>) {
+  let { data: events, error } = await createClient()
+    .from('events')
+    .select('*')
+    .eq('group_id', group.id)
+
   return (
     <Link href={group.name} className="font-medium text-gray-900">
       <li className="col-span-1 flex rounded-md shadow-sm">
@@ -27,7 +33,9 @@ export default function GroupItem({
           <div className="flex-1 truncate px-4 py-2 text-sm">
             {group.name}
 
-            <p className="text-gray-500">16 Events</p>
+            <p className="text-gray-500">
+              {events?.length} {events?.length > 1 ? 'Events' : 'Event'}
+            </p>
           </div>
           <div className="flex-shrink-0 pr-4">
             <Eye className="size-5 text-gray-500" />

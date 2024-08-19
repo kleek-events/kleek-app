@@ -24,7 +24,7 @@ export default async function EventItem({
   }
 }>) {
   if (event.contentUri == 'http://ipfs' || !event.contentUri) return
-  console.log('event', event)
+
   const metadata = await getEventMetadata(event.contentUri.replace('ipfs://', ''))
 
   if (!metadata) return null
