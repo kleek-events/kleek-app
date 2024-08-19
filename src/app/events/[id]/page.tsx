@@ -51,8 +51,7 @@ async function Event({ params }: { params: { id: number } }) {
             Deposit: {metadata.visibility}
           </div>
         </div>
-
-        <RegisterButton />
+        <RegisterButton event={event} />
       </div>
 
       <div className="md:col-span-2">

@@ -23,7 +23,7 @@ import {
 import { KleekProtocolABI } from '@/lib/abi'
 import { toast } from '@/components/ui/use-toast'
 
-export function RegisterButton() {
+export function RegisterButton({ event }: { event: any }) {
   const account = useAccount()
   const [loading, setLoading] = useState(false)
 
@@ -72,6 +72,13 @@ export function RegisterButton() {
       })
     }
   }
+
+  if (event.owner.toLowerCase() == account.address?.toLowerCase())
+    return (
+      <Button variant="ghost" disabled>
+        You cannot register for your own event
+      </Button>
+    )
 
   if (!account || !account.address)
     return (
