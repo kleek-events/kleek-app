@@ -14,7 +14,7 @@ export async function getAllEvents() {
     },
     body: JSON.stringify({
       query: `{
-            eventCreateds(where: {endDate_gt: ${today}}, orderBy: timestamp, orderDirection: desc) {
+            eventCreateds(where: {endDate_gt: ${today}, eventId_gte: 2}, orderBy: timestamp, orderDirection: desc) {
                 id  
                 eventId
                 owner
