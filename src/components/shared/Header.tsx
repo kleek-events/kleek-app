@@ -7,6 +7,7 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import SignInButton from '@/components/SignInButton'
+import { HeartHandshake } from 'lucide-react'
 
 const navigation = [
   { name: 'Discover', href: '/discover' },
@@ -25,15 +26,8 @@ export default function Header() {
       >
         <div className="flex lg:flex-1">
           <Link href={'/'} className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <Image
-              alt=""
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              className="h-8 w-auto"
-              width={32}
-              height={32}
-              unoptimized
-            />
+            <span className="sr-only">Kleek</span>
+            <HeartHandshake className="size-8 w-auto text-fuchsia-600" />
           </Link>
         </div>
         <div className="flex lg:hidden">
