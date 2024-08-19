@@ -11,9 +11,11 @@ function RootLayoutInner({
 }>) {
   return (
     <div className="h-full">
-      <Header />
-      {children}
-      <Footer />
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
       <Toaster />
     </div>
   )

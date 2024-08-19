@@ -18,8 +18,8 @@ export default function Layout({
       {account.isConnected ? (
         children
       ) : (
-        <div className="mt-6 flex flex-col items-center justify-center gap-6 text-lg leading-8 text-gray-600">
-          <p className="text-xl">You need an log in to create an event</p>
+        <div className="mt-6 flex flex-col items-center justify-center gap-6 leading-8 text-gray-600">
+          <p className="text-base">Sign in to create an event.</p>
           <SignInButton />
         </div>
       )}
