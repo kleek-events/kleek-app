@@ -7,6 +7,7 @@ import { Calendar, MapPin, Users, Clock, HeartHandshakeIcon } from 'lucide-react
 
 import { getEventMetadata } from '@/services/ipfs'
 import { PINATA_GATEWAY_URL } from '@/utils/pinata'
+import { getTokenByAddress } from '@/utils/blockchain'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -43,19 +44,26 @@ export default async function EventItem({
       href={`/events/${event.eventId}`}
       className="block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-fuchsia-400 hover:shadow-md"
     >
-      <div className="flex">
-        <div className="relative h-48 w-48 flex-shrink-0">
+      <div className="flex p-4">
+        <div className="relative size-48 flex-shrink-0">
           <Image
             fill
             alt={metadata.name}
             src={`https://${PINATA_GATEWAY_URL}/ipfs/${metadata.thumbnail}`}
-            className="object-cover"
+            className="rounded-lg object-cover"
           />
-          <div className="absolute left-2 top-2 rounded bg-white px-2 py-1 text-xs font-semibold text-gray-700">
-            Deposit: {metadata.depositFee} {metadata.depositToken.toUpperCase()}
+          <div className="absolute left-2 top-2 inline-flex gap-1 rounded bg-white px-2 py-1 text-sm font-semibold text-gray-700 shadow-sm">
+            Deposit: {metadata.depositFee}
+            <Image
+              src={getTokenByAddress(metadata.depositToken)?.logo}
+              width={16}
+              height={16}
+              alt="token logo"
+              className="size-5"
+            />
           </div>
         </div>
-        <div className="flex flex-1 flex-col p-4">
+        <div className="flex flex-1 flex-col px-4">
           <div className="mb-2 flex items-start justify-between">
             <h3 className="text-xl font-bold text-gray-900">{metadata.name}</h3>
             <span className="ml-2 inline-flex rounded-full bg-fuchsia-100 px-2 py-1 text-xs font-semibold leading-5 text-fuchsia-600">
