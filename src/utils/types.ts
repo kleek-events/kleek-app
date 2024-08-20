@@ -11,7 +11,6 @@ export interface Token {
 interface ContractDetails {
   address: {
     base: Address
-    }
   }
 }
 
