@@ -47,7 +47,7 @@ export const formSchema = z
       .string({
         required_error: 'A location is required.',
       })
-      .min(10, {
+      .min(2, {
         message: 'Location must be at least 10 characters.',
       }),
     depositToken: z.string({
@@ -72,4 +72,8 @@ export const formSchema = z
   .refine((data) => data.endDate > data.startDate, {
     message: 'End date cannot be earlier than start date.',
     path: ['endDate'],
+  })
+  .refine((data) => data.registrationDeadline <= data.startDate, {
+    message: 'Registration deadline cannot must be earlier than startDate.',
+    path: ['registrationDeadline'],
   })

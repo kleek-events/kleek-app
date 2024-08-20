@@ -3,8 +3,7 @@ import React, { useState } from 'react'
 import { LogIn } from 'lucide-react'
 import { useAccount } from 'wagmi'
 import { writeContract, waitForTransactionReceipt } from '@wagmi/core'
-import { wagmiConfig } from '@/config/wagmi'
-import { decodeErrorResult, erc20Abi } from 'viem'
+import { erc20Abi } from 'viem'
 
 import {
   Modal,
@@ -15,27 +14,25 @@ import {
   ModalTrigger,
 } from '@/components/ui/animated-modal'
 import { Button } from '@/components/ui/button'
-import {
-  KLEEK_PROXY_ADDRESS,
-  KLEEK_SHARE_DEPOSIT_ADDRESS,
-  USDC_ADDRESS_BASE_SEPOLIA,
-} from '@/utils/blockchain'
+import { contracts, getTokenByAddress } from '@/utils/blockchain'
 import { KleekProtocolABI } from '@/lib/abi'
 import { toast } from '@/components/ui/use-toast'
+import { wagmiConfig } from '@/config/wagmi'
+import { EventMetadata } from '@/services/ipfs'
 
-export function RegisterButton({ event }: { event: any }) {
+export function RegisterButton({ event, metadata }: { event: any; metadata: EventMetadata }) {
   const account = useAccount()
   const [loading, setLoading] = useState(false)
 
   const submitRegister = async () => {
     try {
       setLoading(true)
-      const depositFee = BigInt(5 * 10 ** 6)
+      const depositFee = BigInt(metadata.depositFee * 10 ** 6)
       const tx1Hash = await writeContract(wagmiConfig, {
         abi: erc20Abi,
-        address: USDC_ADDRESS_BASE_SEPOLIA,
+        address: getTokenByAddress(metadata.depositToken)?.address,
         functionName: 'approve',
-        args: [KLEEK_SHARE_DEPOSIT_ADDRESS, depositFee],
+        args: [contracts.KLEEK_SHARE_DEPOSIT.address.base, depositFee],
       })
 
       //wait for the approval to go through
@@ -49,9 +46,9 @@ export function RegisterButton({ event }: { event: any }) {
 
       const tx2Hash = await writeContract(wagmiConfig, {
         abi: KleekProtocolABI,
-        address: KLEEK_PROXY_ADDRESS,
+        address: contracts.KLEEK_PROXY.address.base,
         functionName: 'enroll',
-        args: [2, account.address],
+        args: [event.eventId, account.address],
       })
 
       const tx2Receipt = await waitForTransactionReceipt(wagmiConfig, {

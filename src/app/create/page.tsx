@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { encodeAbiParameters } from 'viem'
-import { writeContract } from '@wagmi/core'
+import { writeContract, waitForTransactionReceipt, simulateContract } from '@wagmi/core'
 import { useAccount } from 'wagmi'
 import Image from 'next/image'
 import { z } from 'zod'
@@ -11,6 +11,7 @@ import { Calendar, HeartHandshake, UsersRound } from 'lucide-react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import tz from 'dayjs/plugin/timezone'
+
 dayjs.extend(utc)
 dayjs.extend(tz)
 
@@ -44,7 +45,7 @@ import { createClient } from '@/utils/supabase/client'
 import { useToast } from '@/components/ui/use-toast'
 import { KleekProtocolABI } from '@/lib/abi'
 import { wagmiConfig } from '@/config/wagmi'
-import { DEPOSIT_TOKEN_ALLOWED, KLEEK_PROXY_ADDRESS } from '@/utils/blockchain'
+import { contracts, getTokenByName } from '@/utils/blockchain'
 
 export default function Create() {
   const account = useAccount()
@@ -86,6 +87,14 @@ export default function Create() {
     setLoading(true)
 
     try {
+      //get deposit token address
+      const token = getTokenByName(values.depositToken)
+      if (!token) {
+        throw new Error('Invalid token')
+      }
+
+      console.log('token', token)
+      console.log('values', values)
       //upload thumbnail to IPFS
       const data = new FormData()
       data.set('file', values.thumbnail)
@@ -115,6 +124,7 @@ export default function Create() {
           : dayjs(values.startDate).tz(values.timezone).unix(),
         thumbnail: uploadFileResponse.IpfsHash,
         capacity: values.capacity ?? 0,
+        depositToken: token?.address,
       }
 
       console.log(eventData)
@@ -134,18 +144,17 @@ export default function Create() {
 
       //set params
       // const token = WHITELISTED_TOKENS.find((t) => t.address == props.conditions.tokenAddress)
-      // const depositFee = BigInt(eventData.depositFee * 10 ** (token?.decimals ?? 18))
-      const depositFee = BigInt(eventData.depositFee * 10 ** 6)
+      const depositFee = BigInt(eventData.depositFee * 10 ** (token?.decimals ?? 18))
       let params = encodeAbiParameters(
         [{ type: 'uint256' }, { type: 'address' }],
-        [depositFee, DEPOSIT_TOKEN_ALLOWED.find((t) => t.name == 'usdc').address.testnet],
+        [depositFee, token?.address],
       )
       console.log(params)
 
       //create event on chain
-      const result = await writeContract(wagmiConfig, {
+      const { request } = await simulateContract(wagmiConfig, {
         abi: KleekProtocolABI,
-        address: KLEEK_PROXY_ADDRESS,
+        address: contracts.KLEEK_PROXY.address.base,
         functionName: 'create',
         args: [
           `ipfs://${uploadEventData.IpfsHash}`,
@@ -156,18 +165,31 @@ export default function Create() {
           params,
         ],
       })
-      setLoading(false)
-      //create event in database
+      console.log(request)
+      const hash = await writeContract(wagmiConfig, request)
 
-      console.log(result)
+      //create event in database
+      // const resp = await fetch('/api/events', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ groupId, onChainEventId: result.id }),
+      // })
+
+      // if (!resp.ok) {
+      //   const data = await resp.json()
+      //   throw new Error(data.error)
+      // }
+
+      //revalidate subgraph query
+      // revalidateTag('eventCreateds')
     } catch (e) {
       console.log(e)
-      setLoading(false)
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.',
       })
+    } finally {
+      setLoading(false)
     }
   }
 
