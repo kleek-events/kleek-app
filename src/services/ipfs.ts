@@ -1,7 +1,9 @@
+import { Address } from 'viem'
+
 import { PINATA_GATEWAY_URL } from '@/utils/pinata'
 import { HttpRequest } from '@/utils/request'
 
-interface EventMetadata {
+export interface EventMetadata {
   groupId: string
   visibility: string
   name: string
@@ -11,7 +13,7 @@ interface EventMetadata {
   timezone: string
   thumbnail: string
   location: string
-  depositToken: string
+  depositToken: Address
   depositFee: number
   capacity: number
   registrationDeadline: number

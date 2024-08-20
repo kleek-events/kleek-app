@@ -58,16 +58,15 @@ export function RegisterButton({ event, metadata }: { event: any; metadata: Even
       if (tx2Receipt.status != 'success') {
         throw new Error('Failed to enroll')
       }
-
-      setLoading(false)
     } catch (error) {
       console.log(error)
-      setLoading(false)
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.',
       })
+    } finally {
+      setLoading(false)
     }
   }
 

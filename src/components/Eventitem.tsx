@@ -65,7 +65,7 @@ export default async function EventItem({
         </div>
         <div className="flex flex-1 flex-col px-4">
           <div className="mb-2 flex items-start justify-between">
-            <h3 className="text-xl font-bold text-gray-900">{metadata.name}</h3>
+            <h3 className="w-3/5 text-xl font-bold text-gray-900">{metadata.name}</h3>
             <span className="ml-2 inline-flex rounded-full bg-fuchsia-100 px-2 py-1 text-xs font-semibold leading-5 text-fuchsia-600">
               {metadata.shareDeposit && (
                 <div className="inline-flex items-center gap-1">
