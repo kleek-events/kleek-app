@@ -34,13 +34,9 @@ export default function GroupSelect({
         {groups &&
           groups.map((group: any) => (
             <SelectItem value={group.id} key={group.id}>
-              <div className="flex items-start gap-3 text-muted-foreground">
+              <div className="flex items-start gap-2 overflow-hidden text-muted-foreground">
                 <HeartHandshake className="size-5" />
-                <div className="grid gap-0.5">
-                  <p>
-                    <span className="font-medium text-foreground">{group.name}</span>
-                  </p>
-                </div>
+                <span className="truncate font-medium text-foreground">{group.name}</span>
               </div>
             </SelectItem>
           ))}

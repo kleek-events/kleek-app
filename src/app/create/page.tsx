@@ -46,6 +46,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { KleekProtocolABI } from '@/lib/abi'
 import { wagmiConfig } from '@/config/wagmi'
 import { contracts, getTokenByName } from '@/utils/blockchain'
+import { CreateEventButton } from '@/components/CreateEventButton'
 
 export default function Create() {
   const account = useAccount()
@@ -62,6 +63,7 @@ export default function Create() {
       startDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
       endDate: new Date(Date.now() + 26 * 60 * 60 * 1000),
     },
+    mode: 'onChange',
   })
 
   const fetchGroups = async () => {
@@ -143,7 +145,6 @@ export default function Create() {
       console.log(uploadEventData)
 
       //set params
-      // const token = WHITELISTED_TOKENS.find((t) => t.address == props.conditions.tokenAddress)
       const depositFee = BigInt(eventData.depositFee * 10 ** (token?.decimals ?? 18))
       let params = encodeAbiParameters(
         [{ type: 'uint256' }, { type: 'address' }],
@@ -168,19 +169,18 @@ export default function Create() {
       console.log(request)
       const hash = await writeContract(wagmiConfig, request)
 
-      //create event in database
-      // const resp = await fetch('/api/events', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ groupId, onChainEventId: result.id }),
-      // })
-
-      // if (!resp.ok) {
-      //   const data = await resp.json()
-      //   throw new Error(data.error)
-      // }
-
       //revalidate subgraph query
-      // revalidateTag('eventCreateds')
+      const resp = await fetch('/api/revalidate', {
+        method: 'POST',
+        body: JSON.stringify({ tag: 'eventCreateds' }),
+      })
+
+      if (!resp.ok) {
+        const data = await resp.json()
+        throw new Error(data.error)
+      }
+      //reset form
+      form.reset()
     } catch (e) {
       console.log(e)
       toast({
@@ -435,39 +435,11 @@ export default function Create() {
               )}
             />
           </div>
-          <Button
+          <CreateEventButton
             className="order-last sm:col-span-2 sm:col-start-2"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? (
-              <div className="inline-flex items-center gap-2">
-                <svg
-                  className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                <span>Creating Event</span>
-              </div>
-            ) : (
-              'Create Event'
-            )}
-          </Button>
+            form={form}
+            onSubmit={onSubmit}
+          />
         </div>
       </form>
     </Form>
