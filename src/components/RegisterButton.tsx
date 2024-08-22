@@ -104,8 +104,8 @@ export function RegisterButton({ event, metadata }: { event: any; metadata: Even
               to know:
             </p>
 
-            <ol className="mb-4 space-y-4">
-              <li className="rounded bg-blue-50 p-3">
+            <ol className="mb-2 max-h-[70%] space-y-4">
+              <li className="rounded bg-blue-50 p-3 text-sm">
                 <strong className="text-blue-700">Deposit: </strong>{' '}
                 <span className="text-gray-700">
                   To ensure attendance, we ask for a small, refundable deposit.
@@ -115,7 +115,7 @@ export function RegisterButton({ event, metadata }: { event: any; metadata: Even
                 </em>
               </li>
 
-              <li className="rounded bg-green-50 p-3">
+              <li className="rounded bg-green-50 p-3 text-sm">
                 <strong className="text-green-700">Blockchain Magic:</strong>{' '}
                 <span className="text-gray-700">
                   We use blockchain technology to make this process secure and automatic. It&apos;s
@@ -123,7 +123,7 @@ export function RegisterButton({ event, metadata }: { event: any; metadata: Even
                 </span>
               </li>
 
-              <li className="rounded bg-purple-50 p-3">
+              <li className="rounded bg-purple-50 p-3 text-sm">
                 <strong className="text-purple-700">Two Quick Steps:</strong>{' '}
                 <ol className="list-lower-alpha mt-2 space-y-1 pl-5">
                   <li className="text-gray-700">
@@ -136,11 +136,6 @@ export function RegisterButton({ event, metadata }: { event: any; metadata: Even
                 </p>
               </li>
             </ol>
-
-            <p className="font-semibold text-gray-700">
-              That&apos;s it! Once done, you&apos;re all set for the event. We can&apos;t wait to
-              see you there!
-            </p>
           </ModalContent>
           <ModalFooter className="gap-4">
             <Button onClick={submitRegister} disabled={loading}>

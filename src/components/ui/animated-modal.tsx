@@ -104,7 +104,7 @@ export const ModalBody = ({ children, className }: { children: ReactNode; classN
           <motion.div
             ref={modalRef}
             className={cn(
-              'relative z-50 flex max-h-[90%] min-h-[50%] flex-1 flex-col overflow-scroll border border-transparent bg-white dark:border-neutral-800 dark:bg-neutral-950 md:max-w-[40%] md:overflow-hidden md:rounded-2xl',
+              'relative z-50 flex max-h-[80%] min-h-[50%] flex-1 flex-col overflow-auto border border-transparent bg-white dark:border-neutral-800 dark:bg-neutral-950 md:max-w-[60%] md:rounded-2xl xl:max-w-[40%]',
               className,
             )}
             initial={{
@@ -146,7 +146,7 @@ export const ModalContent = ({
   children: ReactNode
   className?: string
 }) => {
-  return <div className={cn('flex flex-1 flex-col p-8 md:p-10', className)}>{children}</div>
+  return <div className={cn('flex-1 flex-col p-8 md:p-10', className)}>{children}</div>
 }
 
 export const ModalFooter = ({

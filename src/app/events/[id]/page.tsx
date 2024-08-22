@@ -43,10 +43,10 @@ async function Event({ params }: { params: { id: number } }) {
       <div className="flex flex-col gap-4 md:col-span-1">
         <div className="relative aspect-square w-full overflow-hidden rounded-lg">
           <Image
-            fill
-            alt={metadata.name}
             src={`https://${PINATA_GATEWAY_URL}/ipfs/${metadata.thumbnail}`}
             className="object-cover"
+            alt={metadata.name}
+            fill
           />
           <div className="absolute left-4 top-4 inline-flex gap-1 rounded bg-white px-3 py-1 text-sm font-semibold text-gray-700">
             Deposit: {metadata.depositFee}
