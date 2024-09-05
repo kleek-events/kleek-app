@@ -1,6 +1,7 @@
 # Kleek Frontend 🎉
 
 This project was started during WalletConnect hackathon in partnership with Coinbase, Safe, Magic and 1Inch.
+🏆 It [won the 2nd place](https://devfolio.co/projects/kleek-67d7) in the Coinbase Integration category.
 
 ## About Kleek
 
